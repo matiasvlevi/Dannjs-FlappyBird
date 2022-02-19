@@ -40,12 +40,12 @@ class Bird {
    */
   static initBrain() {
     let nn = new Dann(4, 2);
-    nn.addHiddenLayer(16, 'tanH');
-    nn.addHiddenLayer(6, 'tanH');
+    nn.addHiddenLayer(12, 'tanH');
     nn.outputActivation('tanH');
     nn.makeWeights();
     return nn;
   }
+  // Need more population size
   // static initSmallBrain() {
   //   let nn = new Dann(4, 2);
   //   nn.addHiddenLayer(4, 'tanH');
@@ -90,7 +90,7 @@ class Bird {
   }
   mutate() {
     // Add to a weight by a random proportion in the range of -2% and 2% 
-    let m = 5;
+    let m = 2;
     this.brain.mapWeights((w) => {
       let affectNeuron = Math.floor(Math.random());
       if (affectNeuron > 0.5) {
