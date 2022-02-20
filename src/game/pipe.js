@@ -4,12 +4,14 @@ class Pipe {
     this.gapOffset = random(100, 500);
     this.x = x;
     this.w = 50;
-    this.yoff = 0;
+    this.yoff = Math.random() * 100000;
   }
   update() {
     increase = map(gen, 0, 100000, 0, 1);
     this.x -= 5 + increase;
-    this.yoff += 0.005;
+
+    // Increase for bigger train difficulty
+    this.yoff += 0.002;
     this.gapOffset = map(noise(this.yoff), 0, 1, 100, 500);
     if (this.x <= -this.w) {
       this.x = width;

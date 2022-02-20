@@ -1,7 +1,8 @@
 const grav = 0.28;
 let birds = [];
 let savedBirds = [];
-const lift = -6;
+let bestScore = 0;
+const lift = -4;
 
 class Bird {
   constructor(brain = undefined) {
@@ -12,6 +13,7 @@ class Bird {
     this.size = 16;
     this.c = color(255, 100);
 
+    this.heightAtDeath = 0;
     // Selection properties
     this.fitness = 0;
     this.score = 0;
@@ -41,8 +43,8 @@ class Bird {
   static initBrain() {
     let nn = new Dann(4, 2);
     nn.addHiddenLayer(12, 'tanH');
-    nn.outputActivation('tanH');
-    nn.makeWeights();
+    nn.outputActivation('sigmoid');
+    nn.makeWeights(-0.8, 0.8);
     return nn;
   }
   // Need more population size
@@ -89,19 +91,12 @@ class Bird {
     }
   }
   mutate() {
-    // Add to a weight by a random proportion in the range of -2% and 2% 
-    let m = 2;
-    this.brain.mapWeights((w) => {
-      let affectNeuron = Math.floor(Math.random());
-      if (affectNeuron > 0.5) {
-        let ran = 0.01 * (2 * Math.random() * m - m);
-        return (w * ran) + w;
-      } else {
-        return w;
-      }
-    });
 
-    // Change to any other random function (Weight --> NewWeight)
+    let m = 1;
+    this.brain.mapWeights(w => {
+      let ran = random(-1, 1) * (0.02 / (gen * 0.16));
+      return w + (w * ran);
+    });
   }
   update() {
     this.vel += grav;
