@@ -11,20 +11,22 @@ function nextGen() {
   // Sort best birds
   savedBirds.sort((a, b) => ((a.fit > b.fit) ? 1 : -1));
   let bestBird = [...savedBirds].splice(0, 1)[0];
+
+  let simTime = bestBird.score;
   if (bestBird.score > bestScore) {
     bestScore = bestBird.score;
   }
 
   // Pick one of the 3 best birds
   for (let i = 0; i < TOTAL_POPULATION; i++) {
-    birds[i] = pickOne(bestBird);
+    birds[i] = pickOne(bestBird, simTime);
   }
 
   // Reset previous generation birds.
   savedBirds = [];
 }
 function fitLevel(score, pipeDist) {
-  return score * (score + pipeDist);
+  return score * -(score + Math.abs(pipeDist));
 }
 function calcFitness() {
   let sum = 0;
@@ -37,8 +39,8 @@ function calcFitness() {
   console.log(sum / savedBirds.length);
 }
 
-function pickOne(best) {
+function pickOne(best, simTime) {
   let child = new Bird(best.brain);
-  child.mutate();
+  child.mutate(simTime);
   return child;
 }

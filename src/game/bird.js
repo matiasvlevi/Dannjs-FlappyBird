@@ -90,11 +90,11 @@ class Bird {
       this.jump();
     }
   }
-  mutate() {
+  mutate(simTime) {
 
     let m = 1;
     this.brain.mapWeights(w => {
-      let ran = random(-1, 1) * (0.02 / (gen * 0.16));
+      let ran = random(-1, 1) * (100 / simTime);
       return w + (w * ran);
     });
   }
