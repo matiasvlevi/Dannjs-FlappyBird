@@ -39,7 +39,7 @@ function draw() {
   text("Generation :", 10, 20);
 
   text(`Best survival time : ${Math.floor(bestScore / div)}ms`, 10, 40)
-  text(`Curretn Gen time: ${Math.floor(timer)}ms`, 10, 60)
+  text(`Current Gen time: ${Math.floor(timer)}ms`, 10, 60)
   text(gen, 105, 20);
 
   for (let bird of birds) {
