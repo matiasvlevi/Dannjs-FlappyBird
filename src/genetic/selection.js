@@ -10,8 +10,7 @@ function nextGen() {
   gen += 1;
   // Sort best birds
   savedBirds.sort((a, b) => ((a.fit > b.fit) ? 1 : -1));
-  let bestBird = [...savedBirds].splice(0, 1)[0];
-
+  let bestBird = savedBirds.reverse().splice(0, 4)[0];
   let simTime = bestBird.score;
   if (bestBird.score > bestScore) {
     bestScore = bestBird.score;
@@ -36,7 +35,7 @@ function calcFitness() {
     bird.fitness = scores;
     sum += scores;
   }
-  console.log(sum / savedBirds.length);
+
 }
 
 function pickOne(best, simTime) {

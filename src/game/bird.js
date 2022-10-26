@@ -1,8 +1,8 @@
-const grav = 0.28;
+const grav = 0.38;
 let birds = [];
 let savedBirds = [];
 let bestScore = 0;
-const lift = -4;
+const lift = -5;
 
 class Bird {
   constructor(brain = undefined) {
@@ -11,7 +11,7 @@ class Bird {
     this.pos = createVector((width / 6), (height / 2) * ran + (height / 2));
     this.vel = 0;
     this.size = 16;
-    this.c = color(255, 100);
+    this.c = color(255, 45);
 
     this.heightAtDeath = 0;
     // Selection properties
@@ -42,41 +42,17 @@ class Bird {
    */
   static initBrain() {
     let nn = new Dann(4, 2);
-    nn.addHiddenLayer(12, 'tanH');
-    nn.outputActivation('sigmoid');
+    nn.addHiddenLayer(8, 'tanH');
+    nn.addHiddenLayer(4, 'tanH');
+    nn.outputActivation('softplus');
     nn.makeWeights(-0.8, 0.8);
     return nn;
   }
-  // Need more population size
-  // static initSmallBrain() {
-  //   let nn = new Dann(4, 2);
-  //   nn.addHiddenLayer(4, 'tanH');
-  //   nn.outputActivation('sigmoid');
-  //   nn.makeWeights();
-  //   return nn;
-  // }
-  // // 4 layer brain
-  // static initBrain4layers() {
-  //   let nn = new Dann(4, 2);
-  //   nn.addHiddenLayer(16, 'tanH');
-  //   nn.addHiddenLayer(4, 'tanH');
-  //   nn.outputActivation('tanH');
-  //   nn.makeWeights();
-  //   return nn;
-  // }
-  // // 5 LAYER BRAIN! 
-  // static initBrain5layers() {
-  //   let nn = new Dann(4, 2);
-  //   nn.addHiddenLayer(16, 'tanH');
-  //   nn.addHiddenLayer(8, 'tanH');
-  //   nn.addHiddenLayer(4, 'tanH');
-  //   nn.outputActivation('tanH');
-  //   nn.makeWeights();
-  //   return nn;
-  // }
+ 
   jump() {
     this.vel = lift;
   }
+  
   think(pipe) {
     let inputs = [
       this.pos.y / height,
@@ -90,14 +66,11 @@ class Bird {
       this.jump();
     }
   }
-  mutate(simTime) {
 
-    let m = 1;
-    this.brain.mapWeights(w => {
-      let ran = random(-1, 1) * (100 / simTime);
-      return w + (w * ran);
-    });
+  mutate() {
+    this.brain.mutateRandom(0.4, 0.1);
   }
+
   update() {
     this.vel += grav;
     this.pos.y += this.vel;
@@ -112,16 +85,16 @@ class Bird {
       this.vel = 0;
     }
   }
+
   floor() {
-    if ((this.pos.y >= height - this.size / 2) || (this.pos.y <= this.size / 2)) {
-      return true;
-    } else {
-      return false;
-    }
+    return (
+      (this.pos.y >= height - this.size / 2) || 
+      (this.pos.y <= this.size / 2)
+    )
   }
   render() {
     fill(this.c);
-    stroke(0);
+    noStroke();
     ellipse(this.pos.x, this.pos.y, this.size, this.size);
   }
 }

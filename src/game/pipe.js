@@ -8,10 +8,10 @@ class Pipe {
   }
   update() {
     increase = map(gen, 0, 100000, 0, 1);
-    this.x -= 5 + increase;
+    this.x -= 7 + increase;
 
     // Increase for bigger train difficulty
-    this.yoff += 0.005;
+    this.yoff += 0.004;
     this.gapOffset = map(noise(this.yoff), 0, 1, 100, 500);
     if (this.x <= -this.w) {
       this.x = width;

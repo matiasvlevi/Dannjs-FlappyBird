@@ -1,4 +1,4 @@
-const TOTAL_POPULATION = 300;
+const TOTAL_POPULATION = 500;
 
 const fr = 60;
 function setup() {
@@ -25,12 +25,13 @@ function draw() {
         savedBirds.push(birds.splice(i, 1)[0]);
       }
     }
-    for (let bird of birds) {
-      bird.update();
-      bird.think(pipe);
 
-    }
     pipe.update();
+    for (let bird of birds) {
+      bird.think(pipe);
+      bird.update();
+    }
+
 
     timer += 1 / div;
   }
